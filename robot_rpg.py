@@ -1,8 +1,7 @@
 import random
 
 def posicion_inicial_robot():
-    robot = ((random.randint(0, 9)), (random.randint(0, 9)))
-    return robot
+    return ((random.randint(0, 9)), (random.randint(0, 9)))
 
 def posicion_meta():
     return (random.randint(0, 9), random.randint(0, 9))
@@ -34,55 +33,58 @@ def crear_lista_prohibidas(robot, meta):
 
 def agregar_adyacentes_robot(prohibidas, robot):
     adyacentes_robot = bloqueos_prohibidos(robot)
-    i = 0
-    while i < len(adyacentes_robot):
-        casilla = adyacentes_robot[i]
-        j = 0
+    indice = 0
+    while indice < len(adyacentes_robot):
+        casilla = adyacentes_robot[indice]
+        indice_prohibidas = 0
         encontrada = False
-        while j < len(prohibidas):
-            if casilla == prohibidas[j]:
+        while indice_prohibidas < len(prohibidas):
+            # Comprueba que no haya repetidos en la lista de bloqueos
+            # No esta la meta al lado
+            if casilla == prohibidas[indice_prohibidas]:
                 encontrada = True
                 break
-            j += 1
+            indice_prohibidas += 1
         if not encontrada:
             prohibidas.append(casilla)
-        i += 1
+        indice += 1
     return prohibidas
 
 def agregar_adyacentes_meta(prohibidas, meta):
     adyacentes_meta = bloqueos_prohibidos(meta)
-    k = 0
-    while k < len(adyacentes_meta):
-        casilla = adyacentes_meta[k]
-        l = 0
+    indice_adyacentes = 0
+    while indice_adyacentes < len(adyacentes_meta):
+        casilla = adyacentes_meta[indice_adyacentes]
+        indice_prohibidas = 0
         encontrada = False
-        while l < len(prohibidas):
-            if casilla == prohibidas[l]:
+        while indice_prohibidas < len(prohibidas):
+            if casilla == prohibidas[indice_prohibidas]:
                 encontrada = True
                 break
-            l += 1
+            indice_prohibidas += 1
         if not encontrada:
             prohibidas.append(casilla)
-        k += 1
+        indice_adyacentes += 1
     return prohibidas
 
 def generar_un_bloqueo(prohibidas, bloqueos_existentes):
     while True:
         nuevo = (random.randint(0, 9), random.randint(0, 9))
-        m = 0
+        indice_prohibidas = 0
         en_prohibidas = False
-        while m < len(prohibidas):
-            if nuevo == prohibidas[m]:
+        while indice_prohibidas < len(prohibidas):
+            if nuevo == prohibidas[indice_prohibidas]:
                 en_prohibidas = True
                 break
-            m += 1
-        n = 0
+            indice_prohibidas += 1
+        indice_bloqueos = 0
         en_bloqueos = False
-        while n < len(bloqueos_existentes):
-            if nuevo == bloqueos_existentes[n]:
+        while indice_bloqueos < len(bloqueos_existentes):
+            # Comprueba que no sean repetidas
+            if nuevo == bloqueos_existentes[indice_bloqueos]:
                 en_bloqueos = True
                 break
-            n += 1
+            indice_bloqueos += 1
         if not en_prohibidas and not en_bloqueos:
             return nuevo
 
@@ -128,6 +130,22 @@ def pos_arriba(posicion):
     print("Estas fuera del limite")
     return posicion
 
+def pos_derecha_bloqueos(posicion):
+    posicion_nueva = posicion - 1
+    return posicion_nueva
+
+def pos_izquierda_bloqueos(posicion):
+    posicion_nueva = posicion + 1
+    return posicion_nueva
+
+def pos_abajo_bloqueos(posicion):
+    posicion_nueva = posicion - 1
+    return posicion_nueva
+
+def pos_arriba_bloqueos(posicion):
+    posicion_nueva = posicion + 1
+    return posicion_nueva
+
 def pista(robot, meta):
     x1, y1 = robot
     x2, y2 = meta 
@@ -143,10 +161,12 @@ def iniciar():
     robot = posicion_inicial_robot()
     meta = posicion_meta()
     bloqueos = posicion_bloqueos(robot, meta)
-    print("=====================")
+    print("============================================")
     print("TU objetivo es llegar a la meta")
     print("Durante tu ruta habran casillas bloqueos")
+    print("Si quieres una pista escribe H")
     print(f"Robot empieza en: {robot}")
+    print("============================================")
     
     if robot == meta:
         return False
@@ -155,26 +175,42 @@ def iniciar():
 def main():
     intentos = 0
     robot, meta, bloqueos = iniciar()
+    bloqueos = posicion_bloqueos(robot, meta)
     if robot and meta and bloqueos:
         while not comprobacion_posicion(robot, meta):
             x, y = robot
-            mov = input("¿A donde quieres ir? (L/R/U/D/H) : ")
-            if mov == "R":
+            mov = input("¿A donde quieres ir? (A/D/W/S/H) : ")
+            if mov == "D":
                 y = pos_derecha(y)
-            elif mov == "L":
+            elif mov == "A":
                 y = pos_izquierda(y)
-            elif mov == "D":
+            elif mov == "S":
                 x = pos_abajo(x)
-            elif mov == "U":
+            elif mov == "W":
                 x = pos_arriba(x)
             elif mov =="H":
                 pista(robot, meta)
+                continue
             else:
-                print("Entrada invalida, usa solo L, R, U, D O H")
+                print("Movimiento Invalido")
+                continue
             robot = (x, y)
+            indice_de_bloqueos = 0
+            while indice_de_bloqueos < len(bloqueos):
+                if robot == bloqueos[indice_de_bloqueos]:
+                    print("Casilla bloqueada")
+                    if mov == "D":
+                        y = pos_derecha_bloqueos(y)
+                    elif mov == "A":
+                        y = pos_izquierda_bloqueos(y)
+                    elif mov == "S":
+                        x = pos_abajo_bloqueos(x)
+                    elif mov == "W":
+                        x = pos_arriba_bloqueos(x)
+                    robot = (x, y)
+                    break
+                indice_de_bloqueos += 1
             print(f"Posicion actual: {robot}")
-
         print("Llegaste upbino!!")
-
-
+        print("Viva el tigre!!")
 main()
