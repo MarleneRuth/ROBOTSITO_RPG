@@ -1,93 +1,88 @@
 import random
 
 def posicion_inicial_robot():
-	return ((random.randint(0, 9)), (random.randint(0, 9))) 
+    robot = ((random.randint(0, 9)), (random.randint(0, 9)))
+    return robot
 
 def posicion_meta():
-	return (random.randint(0, 9), random.randint(0, 9))
+    return (random.randint(0, 9), random.randint(0, 9))
 
 def comprobacion_posicion(robot, meta):
-	if robot == meta:
-		return True
-	return False
+    if robot == meta:
+        return True
+    return False
 
 def bloqueos_prohibidos(posicion):
-	x, y = posicion
-	adyacentes = []
-	movimientos = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-	indice = 0
-
-	while indice < len(movimientos):
-		dx, dy = movimientos[indice]
-		nueva_x = x + dx
-		nueva_y = y + dy
-
-		if 0 <= nueva_x <= 9 and 0 <= nueva_y <= 9:
-			adyacentes.append((nueva_x, nueva_y))
-		indice += 1
-
-	return adyacentes
+    x, y = posicion
+    adyacentes = []
+    movimientos = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    indice = 0
+    while indice < len(movimientos):
+        dx, dy = movimientos[indice]
+        nueva_x = x + dx
+        nueva_y = y + dy
+        if 0 <= nueva_x <= 9 and 0 <= nueva_y <= 9:
+            adyacentes.append((nueva_x, nueva_y))
+        indice += 1
+    return adyacentes
 
 def crear_lista_prohibidas(robot, meta):
-	prohibidas = []
-	prohibidas.append(robot)
-	prohibidas.append(meta)
-	return prohibidas
+    prohibidas = []
+    prohibidas.append(robot)
+    prohibidas.append(meta)
+    return prohibidas
 
 def agregar_adyacentes_robot(prohibidas, robot):
-	adyacentes_robot = bloqueos_prohibidos(robot)
-	indice = 0
-	while indice < len(adyacentes_robot):
-		casilla = adyacentes_robot[indice]
-		indice_2 = 0
-		encontrada = False
-		while indice_2 < len(prohibidas): 
-		# Comprueba que no haya repetidos en la lista de bloqueos
-		# No esta la meta al lado
-			if casilla == prohibidas[indice_2]:
-				encontrada = True
-				break
-			indice_2 += 1
-		if not encontrada:
-			prohibidas.append(casilla)
-		indice += 1
-	return prohibidas
+    adyacentes_robot = bloqueos_prohibidos(robot)
+    i = 0
+    while i < len(adyacentes_robot):
+        casilla = adyacentes_robot[i]
+        j = 0
+        encontrada = False
+        while j < len(prohibidas):
+            if casilla == prohibidas[j]:
+                encontrada = True
+                break
+            j += 1
+        if not encontrada:
+            prohibidas.append(casilla)
+        i += 1
+    return prohibidas
 
 def agregar_adyacentes_meta(prohibidas, meta):
-	adyacentes_meta = bloqueos_prohibidos(meta)
-	indice_3 = 0
-	while indice_3 < len(adyacentes_meta):
-		casilla = adyacentes_meta[indice_3]
-		indice_4 = 0
-		encontrada = False
-		while indice_4 < len(prohibidas):
-			if casilla == prohibidas[indice_4]:
-				encontrada = True
-				break
-			indice_4 += 1
-		if not encontrada:
-			prohibidas.append(casilla)
-		indice_3 += 1
-	return prohibidas
+    adyacentes_meta = bloqueos_prohibidos(meta)
+    k = 0
+    while k < len(adyacentes_meta):
+        casilla = adyacentes_meta[k]
+        l = 0
+        encontrada = False
+        while l < len(prohibidas):
+            if casilla == prohibidas[l]:
+                encontrada = True
+                break
+            l += 1
+        if not encontrada:
+            prohibidas.append(casilla)
+        k += 1
+    return prohibidas
 
 def generar_un_bloqueo(prohibidas, bloqueos_existentes):
     while True:
         nuevo = (random.randint(0, 9), random.randint(0, 9))
-        indice_5 = 0
+        m = 0
         en_prohibidas = False
-        while indice_5 < len(prohibidas):
-            if nuevo == prohibidas[indice_5]:
+        while m < len(prohibidas):
+            if nuevo == prohibidas[m]:
                 en_prohibidas = True
                 break
-            indice_5 += 1
-        indice_6 = 0
+            m += 1
+        n = 0
         en_bloqueos = False
-        while indice_6 < len(bloqueos_existentes):
-        	# Comprueba que no sean repetidas
-            if nuevo == bloqueos_existentes[indice_6]:
+        while n < len(bloqueos_existentes):
+            if nuevo == bloqueos_existentes[n]:
                 en_bloqueos = True
                 break
-            indice_6 += 1
+            n += 1
         if not en_prohibidas and not en_bloqueos:
             return nuevo
 
@@ -100,100 +95,86 @@ def generar_todos_bloqueos(prohibidas, cantidad=10):
 
 def posicion_bloqueos(robot, meta, cantidad=10):
     prohibidas = crear_lista_prohibidas(robot, meta)
-    
     prohibidas = agregar_adyacentes_robot(prohibidas, robot)
-
     prohibidas = agregar_adyacentes_meta(prohibidas, meta)
-
     bloqueos = generar_todos_bloqueos(prohibidas, cantidad)
     return bloqueos
 
 def pos_derecha(posicion):
-    limite=9
-    posicion_nueva=posicion+1
-    if posicion_nueva == 
-    elif posicion_nueva<=limite:
-        posicion=posicion_nueva
-        return posicion
-    else:
-        print("Estas fuera del limite")
-        return posicion
-
-def pos_abajo(posicion):
-    limite=9
-    posicion_nueva=posicion+1
-    if posicion_nueva<=limite:
-        posicion=posicion_nueva
-        return posicion
-    else:
-        print("Estas fuera del limite")
-        return posicion
+    posicion_nueva = posicion + 1
+    if posicion_nueva <= 9:
+        return posicion_nueva
+    print("Estas fuera del limite")
+    return posicion
 
 def pos_izquierda(posicion):
-    limite=0
-    posicion_nueva=posicion-1
-    if posicion_nueva>=limite:
-        posicion=posicion_nueva
-        return posicion
-    else:
-        print("Estas fuera del limite")
-        return posicion
+    posicion_nueva = posicion - 1
+    if posicion_nueva >= 0:
+        return posicion_nueva
+    print("Estas fuera del limite")
+    return posicion
+
+def pos_abajo(posicion):
+    posicion_nueva = posicion + 1
+    if posicion_nueva <= 9:
+        return posicion_nueva
+    print("Estas fuera del limite")
+    return posicion
 
 def pos_arriba(posicion):
-    limite=0
-    posicion_nueva=posicion-1
-    if posicion_nueva>=limite:
-        posicion=posicion_nueva
-        return posicion
+    posicion_nueva = posicion - 1
+    if posicion_nueva >= 0:
+        return posicion_nueva
+    print("Estas fuera del limite")
+    return posicion
+
+def pista(robot, meta):
+    x1, y1 = robot
+    x2, y2 = meta 
+    distancia = abs(x1 - x2)+abs(y1 - y2)
+    if distancia<=3:
+        print("ESTAS MUY CERCA!")
+    elif distancia<=6:
+        print("ESTAS A MEDIA DISTANCIA!")
     else:
-        print("Estas fuera del limite")
-        return posicion
+        print("Estas muy lejos")
 
-posiciones = posicion_inicial_robot()
-posicion_x= posiciones[0]
-posicion_y=posiciones[0]
-print(posicion_inicial_robot())
+def iniciar():
+    robot = posicion_inicial_robot()
+    meta = posicion_meta()
+    bloqueos = posicion_bloqueos(robot, meta)
+    print("=====================")
+    print("TU objetivo es llegar a la meta")
+    print("Durante tu ruta habran casillas bloqueos")
+    print(f"Robot empieza en: {robot}")
+    
+    if robot == meta:
+        return False
+    return robot, meta, bloqueos
 
-while True:
-    mov=input("¿A donde quieres ir? (L/R/U/D) : ")
+def main():
+    intentos = 0
+    robot, meta, bloqueos = iniciar()
+    if robot and meta and bloqueos:
+        while not comprobacion_posicion(robot, meta):
+            x, y = robot
+            mov = input("¿A donde quieres ir? (L/R/U/D/H) : ")
+            if mov == "R":
+                y = pos_derecha(y)
+            elif mov == "L":
+                y = pos_izquierda(y)
+            elif mov == "D":
+                x = pos_abajo(x)
+            elif mov == "U":
+                x = pos_arriba(x)
+            elif mov =="H":
+                pista(robot, meta)
+            else:
+                print("Entrada invalida, usa solo L, R, U, D O H")
+            robot = (x, y)
+            print(f"Posicion actual: {robot}")
 
-    if mov=="R":
-        posicion_y=pos_derecha(posicion_y)
-        print(posicion_x,posicion_y)
-        continue
-    if mov=="L":
-        posicion_y=pos_izquierda(posicion_y)
-        print(posicion_x,posicion_y) 
-        continue
-
-    if mov=="D":
-        posicion_x=pos_abajo(posicion_x)
-        print(posicion_x, posicion_y) 
-        continue
-
-    if mov=="U":
-        posicion_x=pos_arriba(posicion_x)
-        print(posicion_, posicion_y) 
-        continue
-
-intentos = 0
-
-#if iniciar():
-#	while not comprobacion_posicion():
+        print("Llegaste upbino!!")
 
 
-
-
-#if intentos == 0:
-
-#else:
-#	print("LLEGASTE!!!!!!")
-
-# Hacer el inicio del juego (def)
-print("=====================")
-print("TU objetivo es llegar a la meta")
-print("Durante tu ruta habran casillas bloqueos")
-# Correr el juego
-# Hacer los mensajes al jugador
-# Pistas
-        continue
+main()
