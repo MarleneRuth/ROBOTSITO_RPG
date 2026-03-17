@@ -197,17 +197,19 @@ def main():
     intentos = 0
     robot, meta, bloqueos, power = iniciar()
     power_activo = False
+    saltos = 1
 
     if robot and meta and bloqueos:
         while not comprobacion_posicion(robot, meta):
             generacion_de_mapa(robot, power, bloqueos)
             x, y = robot
             mov = input("¿A donde quieres ir? (W/A/S/D/H) : ")
-            saltos = 1
             if power_activo:
                 saltos = 2
                 power_activo = False
-
+                power.remove(robot)
+            if not power_activo:
+                saltos=1
             if mov == "D":
                 contador_saltos = 0
                 while contador_saltos < saltos:
@@ -234,6 +236,7 @@ def main():
 
             elif mov == "H":
                 pista(robot, meta)
+
                 continue
 
             else:
@@ -242,7 +245,7 @@ def main():
             robot = (x, y)
 
             if robot in power:
-                print("Power up activado! ⚡⚡⚡")
+                print("Power up activado! ⚡⚡")
                 power_activo = True
 
             indice_de_bloqueos = 0
@@ -267,7 +270,7 @@ def main():
             print(f"Posicion actual: {robot}")
 
         print("Llegaste a la meta upbino!!⚡")
-        print(generacion_de_mapa(robot, power, bloqueos))
+        generacion_de_mapa(robot, power, bloqueos)
 
         print("Viva el tigre!!")
 main()
