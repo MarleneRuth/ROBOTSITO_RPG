@@ -1,4 +1,6 @@
 import random
+import tkinter
+
 
 def posicion_inicial_robot():
     return ((random.randint(0, 9)), (random.randint(0, 9)))
@@ -270,4 +272,5 @@ def main():
         print(generacion_de_mapa(robot, power, bloqueos))
 
         print("Viva el tigre!!")
+
 main()
