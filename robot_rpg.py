@@ -208,7 +208,7 @@ def main():
                 saltos = 2
                 power_activo = False
                 power.remove(robot)
-            if not power_activo:
+            else:
                 saltos=1
             if mov == "D":
                 contador_saltos = 0
