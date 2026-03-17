@@ -203,8 +203,9 @@ def main():
         while not comprobacion_posicion(robot, meta):
             generacion_de_mapa(robot, power, bloqueos)
             x, y = robot
-            mov = input("¿A donde quieres ir? (W/A/S/D/H) : ")
-            if power_activo:
+            mov = input("¿A donde quieres ir? (W/A/S/D): ")
+
+            if power_activo and mov!="H":
                 saltos = 2
                 power_activo = False
                 power.remove(robot)
@@ -236,9 +237,6 @@ def main():
 
             elif mov == "H":
                 pista(robot, meta)
-
-                continue
-
             else:
                 print("Movimiento Invalido")
                 continue
@@ -247,7 +245,6 @@ def main():
             if robot in power:
                 print("Power up activado! ⚡⚡")
                 power_activo = True
-
             indice_de_bloqueos = 0
             while indice_de_bloqueos < len(bloqueos):
                 if robot == bloqueos[indice_de_bloqueos]:
