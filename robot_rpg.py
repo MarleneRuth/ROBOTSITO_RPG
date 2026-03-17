@@ -130,11 +130,19 @@ def pista(robot, meta):
     else:
         print("Estas lejos")
 
-def posicion_power_up(robot, meta, bloqueos):
+
+def verificar_power_up_repetido(prohibidas, power_ups):
     while True:
         casilla_power = (random.randint(0,9), random.randint(0,9))
-        if casilla_power != robot and casilla_power != meta and casilla_power not in bloqueos:
+        if casilla_power not in prohibidas and  casilla_power not in power_ups:
             return casilla_power
+def generar_power_ups(prohibidas,cantidad=4):
+    power_ups= []
+    while len(power_ups)< cantidad:
+        casilla_power = verificar_power_up_repetido(prohibidas,power_ups)
+        power_ups.append(casilla_power)
+    return power_ups
+
 
 def generacion_de_mapa(robot, power_up, bloqueos):
     matriz = [
@@ -155,7 +163,7 @@ def generacion_de_mapa(robot, power_up, bloqueos):
                 if celda != robot:
                     if celda != power_up:
                         contenido = "⬜"
-                    else:
+                    if celda in power_up:
                         contenido = "⚡"
                 else:
                     contenido = "🤖"
@@ -168,7 +176,7 @@ def iniciar():
     robot = posicion_inicial_robot()
     meta = posicion_meta()
     bloqueos = posicion_bloqueos(robot, meta)
-    power = posicion_power_up(robot, meta, bloqueos)
+    power = generar_power_ups(bloqueos)
 
     print("============================================")
     print("Tu objetivo es llegar a la meta")
@@ -195,7 +203,6 @@ def main():
             generacion_de_mapa(robot, power, bloqueos)
             x, y = robot
             mov = input("¿A donde quieres ir? (W/A/S/D/H) : ")
-
             saltos = 1
             if power_activo:
                 saltos = 2
@@ -234,8 +241,8 @@ def main():
                 continue
             robot = (x, y)
 
-            if robot == power:
-                print("Power up activado!")
+            if robot in power:
+                print("Power up activado! ⚡⚡⚡")
                 power_activo = True
 
             indice_de_bloqueos = 0
@@ -259,6 +266,8 @@ def main():
 
             print(f"Posicion actual: {robot}")
 
-        print("Llegaste a la meta upbino!!")
+        print("Llegaste a la meta upbino!!⚡")
+        print(generacion_de_mapa(robot, power, bloqueos))
+
         print("Viva el tigre!!")
 main()
