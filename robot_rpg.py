@@ -123,7 +123,7 @@ def pista(robot, meta):
     x1, y1 = robot
     x2, y2 = meta 
     distancia = abs(x1 - x2)+abs(y1 - y2)
-    if distancia<=3:
+    if distancia<=2:
         print("Estas cerca...")
     elif distancia<=6:
         print("Estas a media distancia!")
@@ -136,6 +136,7 @@ def verificar_power_up_repetido(prohibidas, power_ups):
         casilla_power = (random.randint(0,9), random.randint(0,9))
         if casilla_power not in prohibidas and  casilla_power not in power_ups:
             return casilla_power
+            
 def generar_power_ups(prohibidas,cantidad=4):
     power_ups= []
     while len(power_ups)< cantidad:
@@ -185,9 +186,6 @@ def iniciar():
     print("Si quieres una pista escribe H")
     print(f"Robot empieza en: {robot}")
     print("============================================")
-    print("Meta:", meta)
-    print("Bloqueos:", bloqueos)
-    print("Power up:", power)
     if robot == meta:
         return False
 
@@ -205,61 +203,53 @@ def main():
             x, y = robot
             mov = input("¿A donde quieres ir? (W/A/S/D): ")
 
-            if power_activo and mov!="H":
+            if power_activo and mov !="H":
                 saltos = 2
                 power_activo = False
                 power.remove(robot)
             else:
                 saltos=1
-            if mov == "D":
-                contador_saltos = 0
-                while contador_saltos < saltos:
-                    y = pos_derecha(y)
-                    contador_saltos += 1
-
-
-            elif mov == "A":
-                contador_saltos = 0
-                while contador_saltos < saltos :
-                    y = pos_izquierda(y)
-                    contador_saltos += 1
-
-
-            elif mov == "S":
-                contador_saltos = 0
-                while contador_saltos < saltos:
-                    x = pos_abajo(x)
-                    contador_saltos += 1
-
-
-            elif mov == "W":
-                contador_saltos = 0
-                while contador_saltos < saltos:
-                    x = pos_arriba(x)
-                    contador_saltos += 1
-
-            elif mov == "H":
+            contador_saltos = 0
+            if mov == "H":
                 pista(robot, meta)
-            else:
-                print("Movimiento Invalido")
-                continue
-
-            nueva_pos = (x, y)
-
-            if nueva_pos in bloqueos:
-                print("Casilla bloqueada")
-                x, y = robot
-            else:
-                robot = nueva_pos
-
+            while contador_saltos < saltos:
+                if mov == "D":
+                    y = pos_derecha(y)
+                elif mov == "A":
+                    y = pos_izquierda(y)
+                elif mov == "S":
+                    x = pos_abajo(x)
+                elif mov == "W":
+                    x = pos_arriba(x)
+                elif mov == "H":
+                    break
+                else:
+                    print("Movimiento Invalido")
+                    if saltos == 2:
+                        print("Perdiste tu power up 😂😂")
+                    break
+                robot = (x, y)
+                contador_saltos += 1
+            for indice in range(len(bloqueos)):
+                if robot == bloqueos[indice]:
+                    print("Casilla bloqueada")
+                    if mov == "D":
+                        y = pos_derecha_bloqueos(y)
+                    elif mov == "A":
+                        y = pos_izquierda_bloqueos(y)
+                    elif mov == "S":
+                        x = pos_abajo_bloqueos(x)
+                    elif mov == "W":
+                        x = pos_arriba_bloqueos(x)
+                    robot = (x, y)
+                    break
             if robot in power:
                 print("Power up activado! ⚡⚡")
                 power_activo = True
-            indice_de_bloqueos = 0
-            while indice_de_bloqueos < len(bloqueos):
-                if robot == bloqueos[indice_de_bloqueos]:
-                    print("Casilla bloqueada")
 
+            for indice in range(len(bloqueos)):
+                if robot == bloqueos[indice]:
+                    print("Casilla bloqueada")
                     if mov == "D":
                         y = pos_derecha_bloqueos(y)
                     elif mov == "A":
@@ -272,12 +262,10 @@ def main():
                     robot = (x, y)
                     break
 
-                indice_de_bloqueos += 1
-
             print(f"Posicion actual: {robot}")
 
         print("Llegaste a la meta upbino!!⚡")
         generacion_de_mapa(robot, power, bloqueos)
 
-        print("Viva el tigre!!")
+        print("Viva el tigre!!🐯")
 main()
