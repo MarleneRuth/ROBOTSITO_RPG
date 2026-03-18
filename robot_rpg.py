@@ -135,7 +135,7 @@ def verificar_power_up_repetido(prohibidas, power_ups):
         if casilla_power not in prohibidas and  casilla_power not in power_ups :
             return casilla_power
             
-def generar_power_ups(prohibidas,cantidad=88):
+def generar_power_ups(prohibidas,cantidad=4):
     power_ups= []
     while len(power_ups)< cantidad:
         casilla_power = verificar_power_up_repetido(prohibidas,power_ups)
@@ -199,7 +199,7 @@ def main():
         while not comprobacion_posicion(robot, meta):
             generacion_de_mapa(robot, power, bloqueos)
             x, y = robot
-            mov = input("¿A donde quieres ir? (W/A/S/D): ")
+            mov = input("¿A donde quieres ir? (W/A/S/D): ").upper()
 
             if power_activo and mov !="H":
                 saltos = 2
