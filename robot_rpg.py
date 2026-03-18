@@ -39,7 +39,6 @@ def agregar_adyacentes_robot(prohibidas, robot):
         if casilla not in prohibidas:
             prohibidas.append(casilla)
         indice += 1
-
     return prohibidas
 
 def agregar_adyacentes_meta(prohibidas, meta):
@@ -52,7 +51,6 @@ def agregar_adyacentes_meta(prohibidas, meta):
         if casilla not in prohibidas:
             prohibidas.append(casilla)
         indice_adyacentes += 1
-
     return prohibidas
 
 def generar_bloqueos(prohibidas, bloqueos_existentes):
@@ -134,10 +132,10 @@ def pista(robot, meta):
 def verificar_power_up_repetido(prohibidas, power_ups):
     while True:
         casilla_power = (random.randint(0,9), random.randint(0,9))
-        if casilla_power not in prohibidas and  casilla_power not in power_ups:
+        if casilla_power not in prohibidas and  casilla_power not in power_ups :
             return casilla_power
             
-def generar_power_ups(prohibidas,cantidad=4):
+def generar_power_ups(prohibidas,cantidad=88):
     power_ups= []
     while len(power_ups)< cantidad:
         casilla_power = verificar_power_up_repetido(prohibidas,power_ups)
@@ -177,7 +175,8 @@ def iniciar():
     robot = posicion_inicial_robot()
     meta = posicion_meta()
     bloqueos = posicion_bloqueos(robot, meta)
-    power = generar_power_ups(bloqueos)
+    posiciones_prohibidas = [robot, meta] + bloqueos
+    power = generar_power_ups(posiciones_prohibidas)
 
     print("============================================")
     print("Tu objetivo es llegar a la meta")
@@ -196,7 +195,6 @@ def main():
     robot, meta, bloqueos, power = iniciar()
     power_activo = False
     saltos = 1
-
     if robot and meta and bloqueos:
         while not comprobacion_posicion(robot, meta):
             generacion_de_mapa(robot, power, bloqueos)
