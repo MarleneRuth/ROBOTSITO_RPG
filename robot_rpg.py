@@ -216,24 +216,32 @@ def main():
                 while contador_saltos < saltos:
                     y = pos_derecha(y)
                     contador_saltos += 1
+                    if robot in bloqueos:
+                        y=y-1
 
             elif mov == "A":
                 contador_saltos = 0
-                while contador_saltos < saltos:
+                while contador_saltos < saltos :
                     y = pos_izquierda(y)
                     contador_saltos += 1
+                    if robot in bloqueos:
+                        y=y-1
 
             elif mov == "S":
                 contador_saltos = 0
                 while contador_saltos < saltos:
                     x = pos_abajo(x)
                     contador_saltos += 1
+                    if robot in bloqueos:
+                        x=x-1
 
             elif mov == "W":
                 contador_saltos = 0
                 while contador_saltos < saltos:
                     x = pos_arriba(x)
                     contador_saltos += 1
+                    if robot in bloqueos:
+                        x=x+1
 
             elif mov == "H":
                 pista(robot, meta)
