@@ -260,7 +260,7 @@ def main():
 
             print(f"Posicion actual: {robot}")
 
-        print("Llegaste a la meta upbino!!⚡")
+        print("✨✨Llegaste a la meta upbino!!✨✨")
         generacion_de_mapa(robot, power, bloqueos)
 
         print("Viva el tigre!!🐯")
