@@ -180,6 +180,7 @@ def iniciar():
     print("Tu objetivo es llegar a la meta")
     print("Durante tu ruta habran casillas bloqueos")
     print("Existe una casilla especial Power Up!")
+    print("⚡ El Power Up te permite saltar sobre bloqueos!")
     print("Si quieres una pista escribe H")
     print(f"Robot empieza en: {robot}")
     print("============================================")
